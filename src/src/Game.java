@@ -9,24 +9,109 @@ public class Game {
     public Player player = new Player();
     public ArrayList<Card> deck = new ArrayList<>();
     public final int MIN_BET = 5;
+    public final int NUMBER_OF_DECKS = 6;
 
     public void start() {
-        for (Card.Rank rank : Card.Rank.values()) {
-            for (Card.Suit suit : Card.Suit.values()) {
-                deck.add(new Card(rank, suit));
+        dealer.name = "Charles";
+
+        System.out.println("Initializing deck...");
+        initializeDeck();
+
+        System.out.println("Game starting...");
+        promptName();
+        promptBuyIn();
+        promptBet();
+
+        //Start game loop
+        gameLoop();
+
+        System.out.println("Thanks for playing!");
+    }
+
+    private void initializeDeck() {
+        this.deck = new ArrayList<>();
+        for(int i = 0; i < this.NUMBER_OF_DECKS; i++) {
+            for (Card.Rank rank : Card.Rank.values()) {
+                for (Card.Suit suit : Card.Suit.values()) {
+                    this.deck.add(new Card(rank, suit));
+                }
             }
         }
-        System.out.println("Game starting...");
+    }
 
-        dealer.name = "Fucknut";
-
+    private void promptName() {
         System.out.println("Welcome to the Blackjack table. My name is "
                 + dealer.name
-                + ". I'll be your dealer tonight. "
-                + "What is your name?");
+                + ". I'll be your dealer tonight.");
+        System.out.println("What is your name?");
         String name = scanner.nextLine();
         player.name = name;
-        System.out.println("Hello, " + name + ". Please take a seat. The minimum bet is $"
-                + MIN_BET + ".");
+        System.out.println("Hello, " + name + ". Please take a seat. The minimum bet is $" + MIN_BET + ".");
+    }
+
+    private void promptBuyIn() {
+        System.out.println("How much would you like to buy in for?");
+        System.out.print("$");
+        int buyInAmount = scanner.nextInt();
+        while(buyInAmount < MIN_BET || buyInAmount % 5 != 0) {
+            if (buyInAmount < MIN_BET) {
+                System.out.println("You must buy in for at least $" + MIN_BET + ".");
+            } else if (buyInAmount % 5 != 0) {
+                System.out.println("You can only buy in for increments of " + MIN_BET + ".");
+            }
+            System.out.print("$");
+            buyInAmount = scanner.nextInt();
+        }
+        player.buyIn(buyInAmount);
+    }
+
+    private void promptBet() {
+        System.out.println("Please place your bet:");
+        System.out.print("$");
+        int betAmount = scanner.nextInt();
+        while(betAmount > player.currentBalance || betAmount % 5 != 0) {
+            if(betAmount > player.currentBalance) {
+                System.out.println("You cannot bet more than your Balance of $" + player.currentBalance + ".");
+            } else if(betAmount % 5 != 0) {
+                System.out.println("You can only bet in increments of " + MIN_BET + ".");
+            }
+            System.out.print("$");
+            betAmount = scanner.nextInt();
+        }
+        player.placeBet(betAmount);
+    }
+
+    private void gameLoop() {
+        while(player.currentBalance > 0) {
+            System.out.println("Dealing cards...");
+
+
+
+            if (player.currentBalance <= 0) {
+                System.out.println("You seem to have run out of money. Would you like to buy back in? (y/n)");
+                String outOfMoneyResponse = scanner.next();
+                if(outOfMoneyResponse.toLowerCase() == "y") {
+                    promptBuyIn();
+                }
+            } else {
+                promptCashOut();
+            }
+        }
+    }
+
+    private void promptCashOut() {
+        System.out.println("Would you like to cash out? (y/n)");
+        String cashOutResponse = scanner.next();
+        if(cashOutResponse.toLowerCase().equals("y")) {
+            System.out.println("You won $" + player.currentBalance + "!");
+            player.currentBalance = 0;
+        }
+    }
+
+    private void checkDeckSize() {
+        if(this.deck.size() < 52) {
+            System.out.println("Shuffling deck...");
+            this.initializeDeck();
+        }
     }
 }

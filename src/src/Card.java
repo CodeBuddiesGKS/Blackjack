@@ -7,6 +7,7 @@ public class Card {
     public Rank rank;
     public Suit suit;
     public Integer value;
+    public boolean hidden = true;
 
     public String toString() {
         return "Rank: " + rank + " | " +
