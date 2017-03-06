@@ -7,7 +7,7 @@ public class Card {
     public Rank rank;
     public Suit suit;
     public Integer value;
-    public boolean hidden = true;
+    public boolean hidden = false;
 
     public String toString() {
         return "Rank: " + rank + " | " +
@@ -20,7 +20,7 @@ public class Card {
         this.suit = suit;
         switch (rank) {
             case Ace:
-                this.value = 1;
+                this.value = 11;
                 break;
             case Two:
                 this.value = 2;

@@ -12,12 +12,11 @@ public class Game {
     public final int NUMBER_OF_DECKS = 6;
 
     public void start() {
-        dealer.name = "Charles";
-
         System.out.println("Initializing deck...");
         initializeDeck();
 
         System.out.println("Game starting...");
+
         promptName();
         promptBuyIn();
         promptBet();
@@ -85,27 +84,93 @@ public class Game {
         while(player.currentBalance > 0) {
             System.out.println("Dealing cards...");
 
+            deal();
+            displayHands();
+
+            // Player phase
+            boolean broke = false;
+            if (player.hand.get(0).value + player.hand.get(1).value == 21) {
+                System.out.println("Blackjack, you win!");
+                player.currentBalance += player.currentBet * 1.5;
+            } else {
+                System.out.println("Hit or Stay? (h/s)");
+                String hitOrStay = scanner.next().toLowerCase();
+                while (hitOrStay.equals("h") && !broke) {
+                    player.drawCard(deck);
+                    displayHands();
+                    if (player.getSumOfParticipantsHand() > 21) {
+                        broke = true;
+                        System.out.println("You broke, you lose!");
+                    } else {
+                        System.out.println("Hit or Stay? (h/s)");
+                        hitOrStay = scanner.next().toLowerCase();
+                    }
+                }
+            }
+
+            //Dealer phase
+            //flipDealersHiddenCard();
+            if (!broke && dealer.getSumOfParticipantsHand() < 17) {
+                dealer.drawCard(deck);
+                displayHands();
+            }
 
 
             if (player.currentBalance <= 0) {
                 System.out.println("You seem to have run out of money. Would you like to buy back in? (y/n)");
-                String outOfMoneyResponse = scanner.next();
-                if(outOfMoneyResponse.toLowerCase() == "y") {
+                String outOfMoneyResponse = scanner.next().toLowerCase();
+                if(outOfMoneyResponse == "y") {
                     promptBuyIn();
+                    promptBet();
                 }
             } else {
                 promptCashOut();
             }
+
+            resetHands();
+            checkDeckSize();
         }
+    }
+
+    private void deal() {
+        player.drawCard(deck);
+        dealer.drawCard(deck, true);
+        player.drawCard(deck);
+        dealer.drawCard(deck);
+    }
+
+    private void displayHands() {
+        System.out.print("Dealers Hand: ");
+        for(Card c : dealer.hand) {
+            System.out.print(c.rank + " ");
+        }
+        System.out.print("\nYour Hand: ");
+        for(Card c : player.hand) {
+            System.out.print(c.rank + " ");
+        }
+        System.out.println();
     }
 
     private void promptCashOut() {
         System.out.println("Would you like to cash out? (y/n)");
         String cashOutResponse = scanner.next();
         if(cashOutResponse.toLowerCase().equals("y")) {
-            System.out.println("You won $" + player.currentBalance + "!");
+            System.out.println("You spent $" + player.totalAmountSpent + " and left with " + player.currentBalance + ".");
+            int diff = player.currentBalance - player.totalAmountSpent;
+            if (diff > 0) {
+                System.out.println("Congratulations, you won $" + diff + "!");
+            } else {
+                System.out.println("Sorry, you lost $" + Math.abs(diff) + ".");
+            }
             player.currentBalance = 0;
+        } else {
+            promptBet();
         }
+    }
+
+    private void resetHands() {
+        dealer.hand = new ArrayList<>();
+        player.hand = new ArrayList<>();
     }
 
     private void checkDeckSize() {
