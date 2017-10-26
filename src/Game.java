@@ -16,7 +16,6 @@ public class Game {
         initializeDeck();
 
         System.out.println("Game starting...");
-
         promptName();
         promptBuyIn();
         promptBet();
@@ -45,10 +44,11 @@ public class Game {
         System.out.println("What is your name?");
         String name = scanner.nextLine();
         player.name = name;
-        System.out.println("Hello, " + name + ". Please take a seat. The minimum bet is $" + MIN_BET + ".");
+        System.out.print("Hello, " + name + ". Please take a seat. ");
     }
 
     private void promptBuyIn() {
+        System.out.println("The minimum bet is $" + MIN_BET + ".");
         System.out.println("How much would you like to buy in for?");
         System.out.print("$");
         int buyInAmount = scanner.nextInt();
@@ -81,7 +81,7 @@ public class Game {
     }
 
     private void gameLoop() {
-        while(player.currentBalance > 0) {
+        do {
             System.out.println("Dealing cards...");
 
             deal();
@@ -129,7 +129,7 @@ public class Game {
 
             resetHands();
             checkDeckSize();
-        }
+        } while (player.currentBalance > 0);
     }
 
     private void deal() {

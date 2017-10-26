@@ -11,8 +11,8 @@ public class Card {
 
     public String toString() {
         return "Rank: " + rank + " | " +
-               "Suit: " + suit + " | " +
-               "Value: " + value;
+                "Suit: " + suit + " | " +
+                "Value: " + value;
     }
 
     Card(Rank rank, Suit suit) {
