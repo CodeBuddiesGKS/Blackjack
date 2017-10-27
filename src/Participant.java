@@ -9,6 +9,24 @@ public class Participant {
     public ArrayList<Card> hand = new ArrayList<>();
 
     public int getSumOfParticipantsHand() {
+        int sum = calcSum();
+        boolean largeAceFound = true;
+
+        while (sum > 21 && largeAceFound) {
+            largeAceFound = false;
+            for (Card c : this.hand) {
+                if (c.rank == Card.Rank.Ace && c.value == 11) {
+                    c.value = 1;
+                    largeAceFound = true;
+                    break;
+                }
+            }
+            sum = calcSum();
+        }
+        return sum;
+    }
+
+    private int calcSum() {
         int sum = 0;
         for (Card c : this.hand) {
             sum += c.value;

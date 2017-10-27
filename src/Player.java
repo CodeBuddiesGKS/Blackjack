@@ -3,11 +3,9 @@
  */
 import java.util.*;
 public class Player extends Participant {
-
-    public static Scanner scanner = new Scanner(System.in);
-    public int currentBalance = 0;
-    public int currentBet = 0;
-    public int totalAmountSpent = 0;
+    public float currentBalance = 0;
+    public float currentBet = 0;
+    public float totalAmountSpent = 0;
 
     public void buyIn(int amount) {
         this.totalAmountSpent += amount;
@@ -15,7 +13,6 @@ public class Player extends Participant {
     }
 
     public void placeBet(int amount) {
-        this.currentBalance -= amount;
         this.currentBet = amount;
     }
 }

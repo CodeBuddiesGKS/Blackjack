@@ -4,8 +4,8 @@
 public class Card {
     public static enum Rank { Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King }
     public static enum Suit { Heart, Diamond, Club, Spade }
-    public Rank rank;
-    public Suit suit;
+    public final Rank rank;
+    public final Suit suit;
     public Integer value;
     public boolean hidden = false;
 
