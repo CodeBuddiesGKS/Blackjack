@@ -127,7 +127,11 @@ public class Game {
     private void displayHands() {
         System.out.print("Dealers Hand: ");
         for(Card c : dealer.hand) {
-            System.out.print(c.rank + " ");
+            if (c.hidden) {
+                System.out.print("*** ");
+            } else {
+                System.out.print(c.rank + " ");
+            }
         }
         System.out.print("\nYour Hand: ");
         for(Card c : player.hand) {
@@ -159,7 +163,7 @@ public class Game {
     }
 
     private void dealerPhase() {
-        //flipDealersHiddenCard();
+        dealer.hand.get(0).hidden = false;
         while (dealer.getSumOfParticipantsHand() < 17) {
             dealer.drawCard(deck);
             displayHands();
