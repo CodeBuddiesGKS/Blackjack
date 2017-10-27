@@ -144,6 +144,7 @@ public class Game {
         if (player.hand.get(0).value + player.hand.get(1).value == 21) {
             System.out.println("Blackjack, you win!");
             player.currentBalance += player.currentBet * 1.5;
+            isRoundFinished = true;
         } else {
             System.out.println("Hit or Stay? (h/s)");
             String hitOrStay = scanner.next().toLowerCase();
