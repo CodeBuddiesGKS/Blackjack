@@ -4,6 +4,6 @@
 public class Dealer extends Participant {
     Dealer() {
         super();
-        this.name = "Charles";
+        this.name = "Bitterman";
     }
 }

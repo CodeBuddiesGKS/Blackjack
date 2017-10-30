@@ -2,8 +2,8 @@
  * Created by Gavin on 3/4/2017.
  */
 public class Card {
-    public static enum Rank { Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King }
-    public static enum Suit { Heart, Diamond, Club, Spade }
+    public enum Rank { Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King }
+    public enum Suit { Heart, Diamond, Club, Spade }
     public final Rank rank;
     public final Suit suit;
     public Integer value;

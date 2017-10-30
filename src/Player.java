@@ -1,7 +1,6 @@
 /**
  * Created by Gavin on 3/4/2017.
  */
-import java.util.*;
 public class Player extends Participant {
     public float currentBalance = 0;
     public float currentBet = 0;
