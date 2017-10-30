@@ -165,6 +165,7 @@ public class Game {
 
     private void dealerPhase() {
         dealer.hand.get(0).hidden = false;
+        displayHands();
         while (dealer.getSumOfParticipantsHand() < 17) {
             dealer.drawCard(deck);
             displayHands();
